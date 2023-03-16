@@ -1,0 +1,15 @@
+---
+# tasks file for roles/vscode
+- name: Install vscode via snap
+  become: true
+  community.general.snap:
+    name: code
+    classic: true
+    state: present
+
+- name: Install vscode extensions
+  ansible.builtin.command: code --install-extension {{ item }}
+  loop: "{{ extensions }}"
+
+- name: Install vscode theme
+  ansible.builtin.command: code --install-extension {{ theme }}

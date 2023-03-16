@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  name: Setup workstation
+  gather_facts: true
+  become: false
+
+  vars:
+    git_name: "Johannes Seitle"
+    git_email: "johannes@seitle.io"
+    git_username: "twfce"
+
+  roles:
+    - role: basic
+      tags: basic
+    - role: git
+      tags: git
+    - role: vscode
+      tags: vscode

@@ -1,0 +1,39 @@
+---
+- name: Install zsh
+  become: true
+  ansible.builtin.apt:
+    pkg:
+    - zsh
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Download installation script for oh-my-zsh
+  ansible.builtin.get_url:
+    url: https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    dest: /home/{{ ansible_user_id }}/oh-my-zsh.install.sh
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: "a+x"
+
+- name: Execute installation script for oh-my-zsh
+  ansible.builtin.shell:
+    cmd: "CHSH=no RUNZSH=no USER={{ ansible_user_id }} /home/{{ ansible_user_id }}/oh-my-zsh.install.sh"
+    creates: "/home/{{ ansible_user_id }}/.oh-my-zsh"
+
+- name: Remove installation script
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user_id }}/oh-my-zsh.install.sh"
+    state: absent
+
+- name: Copy .zshrc to user directory
+  copy:
+    src: "files/zshrc.template"
+    dest: "/home/{{ ansible_user_id }}/.zshrc"
+    mode: "0644"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+
+- name: Change user shell to zsh
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
+  become: true

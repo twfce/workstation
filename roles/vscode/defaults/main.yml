@@ -1,0 +1,10 @@
+---
+# defaults file for roles/vscode
+extensions: 
+  - ms-python.vscode-pylance
+  - ms-azuretools.vscode-docker
+  - yzhang.markdown-all-in-one
+  - bbenoist.vagrant
+  - redhat.ansible
+  - ms-vscode.powershell
+theme: github.github-vscode-theme

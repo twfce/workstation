@@ -1,0 +1,14 @@
+---
+# tasks file for basic
+- name: Install and configure basic software
+  ansible.builtin.import_tasks: tasks/install_basic_software.yml
+
+- name: Setup gnome with dconf
+  ansible.builtin.import_tasks: tasks/setup_gnome.yml
+  when: "lookup('ansible.builtin.env', 'XDG_CURRENT_DESKTOP') == 'ubuntu:GNOME'"
+
+- name: Setup gnupg
+  ansible.builtin.import_tasks: tasks/setup_gnupg.yml
+
+- name: Setup zsh and oh-my-zsh
+  ansible.builtin.import_tasks: tasks/setup_zsh.yml

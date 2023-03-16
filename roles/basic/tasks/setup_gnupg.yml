@@ -1,0 +1,4 @@
+- name: Enable ssh support
+  ansible.builtin.copy:
+    dest: "/home/{{ ansible_user_id }}/.gnupg/gpg-agent.conf"
+    content: enable-ssh-support

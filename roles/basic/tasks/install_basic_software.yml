@@ -1,0 +1,37 @@
+---
+- name: Add additional keys for apt
+  become: true
+  ansible.builtin.apt_key: 
+    url: "{{ item }}"
+    state: present
+  loop: "{{ additional_apt_keys }}"
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Add additional repositories for apt
+  become: true
+  ansible.builtin.apt_repository: 
+    repo: "{{ item }}"
+    state: present
+    filename: workstation-custom
+  loop: "{{ additional_apt_repositories }}"
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Install default software
+  become: true
+  ansible.builtin.apt:
+    pkg: "{{ required_packages }}"
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Install default snaps
+  become: true
+  community.general.snap:
+    name: "{{ item.name }}"
+    classic: "{{ item.classic }}"
+    state: present
+  loop: "{{ required_snaps }}"
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install python modules
+  ansible.builtin.pip:
+    name: "{{ item }}"
+  loop: "{{ required_python_modules }}"

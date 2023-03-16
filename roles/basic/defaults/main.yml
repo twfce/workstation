@@ -1,0 +1,28 @@
+---
+# defaults file for basic
+additional_apt_keys:
+  - https://packages.doppler.com/public/cli/gpg.DE2A7741A397C129.key
+
+additional_apt_repositories:
+  - deb https://packages.doppler.com/public/cli/deb/debian any-version main
+
+required_packages:
+  - vim
+  - htop
+  - git
+  - python3
+  - python3-pip
+  - curl
+  - tmux
+  - doppler
+  - scdaemon
+  - gnupg2
+
+required_snaps:
+  - name: powershell
+    classic: true
+
+required_python_modules:
+  - ansible-lint
+
+gnome_icon_theme: papirus-icon-theme

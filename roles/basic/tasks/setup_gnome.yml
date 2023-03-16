@@ -1,0 +1,273 @@
+# https://docs.ansible.com/ansible/latest/modules/community.general.dconf_module.html
+# Template from github.com/carlwgeorge
+# 
+# To determine what community.general.dconf keys and values to use, you can run `community.general.dconf watch /`
+# in a terminal as you make changes in settings or tweaks.  You can also use
+# `community.general.dconf read <key>` and `community.general.dconf write <key> <value>` to experiment with various
+# settings.  The community.general.dconf-editor application is also useful for exploring various
+# keys along with their descriptions.
+
+- name: Install playbook requirements
+  become: true
+  package:
+    name:
+      - python3-psutil
+      - dconf-cli
+      - gnome-tweaks
+
+# ####################
+# # gnome extensions #
+# ####################
+
+# - name: install extensions
+#   become: true
+#   package:
+#     name:
+#       - gnome-shell-extension-emoji-selector
+
+# - name: enable extensions
+#   community.general.dconf:
+#     key: "/org/gnome/shell/enabled-extensions"
+#     value: "['emoji-selector@maestroschan.fr']"
+
+#############
+# themes    #
+#############
+
+- name: Copy wallpaper to workstation
+  ansible.builtin.copy:
+    src: files/wallpaper.jpg
+    dest: "/home/{{ ansible_user_id }}/.local/share/backgrounds/"
+
+- name: Set wallpaper
+  community.general.dconf:
+    key: "/org/gnome/desktop/background/picture-uri-dark"
+    value: "'file:///home/{{ ansible_user_id }}/.local/share/backgrounds/wallpaper.jpg'"
+
+- name: Set wallpaper (dark)
+  community.general.dconf:
+    key: "/org/gnome/desktop/background/picture-uri"
+    value: "'file:///home/{{ ansible_user_id }}/.local/share/backgrounds/wallpaper.jpg'"
+
+- name: Set theme
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/gtk-theme"
+    value: "'Yaru-purple-dark'"
+
+- name: Set icon theme
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/icon-theme"
+    value: "'Yaru-purple-dark'"
+
+#############
+# shortcuts #
+#############
+
+# There are many built-in shortcut actions that only require setting a
+# binding to enable.
+
+- name: File browser shortcut
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/home"
+    value: "['<Super>f']"
+
+- name: Web browser shortcut
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/www"
+    value: "['<Super>w']"
+
+# Custom shortcuts are more complicated.  For each shortcut, you have to
+# define a name, a command, and a binding.
+
+- name: Terminal shortcut name
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name"
+    value: "'terminal'"
+
+- name: Terminal shortcut command
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command"
+    value: "'gnome-terminal'"
+
+- name: Terminal shortcut binding
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding"
+    value: "'<Super>t'"
+
+# All of your custom shortcuts must also be added to an array.
+
+- name: Enable custom keybindings
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
+    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
+
+#####################
+# terminal settings #
+#####################
+
+- name: Terminal bell
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/audible-bell"
+    value: "false"
+
+- name: Terminal transparency
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-transparent-background"
+    value: "true"
+
+- name: Terminal transparency percentage
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-transparency-percent"
+    value: "5"
+
+- name: Terminal bright bold
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/bold-is-bright"
+    value: "true"
+
+- name: Terminal scrollback lines
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/scrollback-lines"
+    value: "1000000"
+
+- name: Terminal custom command
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/custom-command"
+    value: "'/bin/zsh -c /bin/tmux'"
+
+- name: Terminal find shortcut
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/keybindings/find"
+    value: "'<Control>f'"
+
+- name: Terminal new tab shortcut
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/keybindings/new-tab"
+    value: "'<Control>t'"
+
+- name: Terminal new tab position
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/new-tab-position"
+    value: "'next'"
+
+#########
+# power #
+#########
+
+- name: Never blank screen
+  community.general.dconf:
+    key: "/org/gnome/desktop/session/idle-delay"
+    value: "uint32 0"
+
+- name: Inactive timeout
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-type"
+    value: "'nothing'"
+
+- name: Inactive timeout on battery
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/power/sleep-inactive-battery-type"
+    value: "'nothing'"
+
+- name: Show battery percentage
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/show-battery-percentage"
+    value: "true"
+
+- name: Ignore lid close
+  become: true
+  lineinfile:
+    path: /etc/systemd/logind.conf
+    regexp: '^HandleLidSwitch='
+    insertafter: '^#HandleLidSwitch='
+    line: 'HandleLidSwitch=ignore'
+
+#################
+# date and time #
+#################
+
+- name: Automatic timezone
+  community.general.dconf:
+    key: "/org/gnome/desktop/datetime/automatic-timezone"
+    value: "true"
+
+- name: Clock show date
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/clock-show-date"
+    value: "true"
+
+- name: Clock format
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/clock-format"
+    value: "'24h'"
+
+############
+# behavior #
+############
+
+- name: Workspaces span displays
+  community.general.dconf:
+    key: "/org/gnome/mutter/workspaces-only-on-primary"
+    value: "false"
+
+- name: App-switcher on the current workspace only
+  community.general.dconf:
+    key: "/org/gnome/shell/app-switcher/current-workspace-only"
+    value: "true"
+
+- name: Set xkb options
+  community.general.dconf:
+    key: "/org/gnome/desktop/input-sources/xkb-options"
+    value: "['caps:escape', 'lv3:rwin_switch', 'shift:both_capslock_cancel']"
+
+- name: Detach modal dialogs
+  community.general.dconf:
+    key: "/org/gnome/shell/overrides/attach-modal-dialogs"
+    value: "false"
+
+- name: Automount
+  community.general.dconf:
+    key: "/org/gnome/desktop/media-handling/automount"
+    value: "true"
+
+- name: Area click method
+  community.general.dconf:
+    key: "/org/gnome/desktop/peripherals/touchpad/click-method"
+    value: "'areas'"
+
+- name: Disable natural scrolling
+  community.general.dconf:
+    key: "/org/gnome/desktop/peripherals/touchpad/natural-scroll"
+    value: "false"
+
+- name: Enable two-finger scrolling
+  community.general.dconf:
+    key: "/org/gnome/desktop/peripherals/touchpad/two-finger-scrolling-enabled"
+    value: "true"
+
+- name: Mutter real-time scheduling
+  community.general.dconf:
+    key: "/org/gnome/mutter/experimental-features"
+    value: "['rt-scheduler']"
+
+- name: Enable subpixel antialiasing
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/xsettings/antialiasing"
+    value: "'rgba'"
+
+- name: Disable hot corner
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/enable-hot-corners"
+    value: "true"
+
+- name: Numlock on
+  community.general.dconf:
+    key: "/org/gnome/desktop/peripherals/keyboard/numlock-state"
+    value: "true"
+
+# Only works on X11, not Wayland.
+
+- name: Middle click titlebar to lower
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/preferences/action-middle-click-titlebar"
+    value: "'lower'"

@@ -105,6 +105,16 @@
 # terminal settings #
 #####################
 
+- name: Profile name
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/visible-name"
+    value: "'Default'"
+
+- name: Background color
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color"
+    value: "'rgb(20,16,31)'"
+
 - name: Terminal bell
   community.general.dconf:
     key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/audible-bell"

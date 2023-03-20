@@ -1,0 +1,9 @@
+- name: Install Tmux Plugin Manager
+  ansible.builtin.git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: /home/{{ ansible_user_id }}/.tmux/plugins/tpm
+
+- name: Copy .tmux.conf to user directory
+  copy:
+    src: "files/.tmux.conf"
+    dest: "/home/{{ ansible_user_id }}/.tmux.conf"

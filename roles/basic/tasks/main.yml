@@ -12,3 +12,6 @@
 
 - name: Setup zsh and oh-my-zsh
   ansible.builtin.import_tasks: tasks/setup_zsh.yml
+
+- name: Setup zsh and oh-my-zsh
+  ansible.builtin.import_tasks: tasks/setup_tmux.yml

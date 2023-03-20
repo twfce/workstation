@@ -37,3 +37,8 @@
     name: "{{ ansible_user_id }}"
     shell: /bin/zsh
   become: true
+
+- name: Copy bureau.zsh-theme to user directory
+  copy:
+    src: "files/bureau.zsh-theme"
+    dest: "/home/{{ ansible_user_id }}/.oh-my-zsh/themes/bureau.zsh-theme"

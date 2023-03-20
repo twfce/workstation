@@ -17,6 +17,7 @@ required_packages:
   - doppler
   - scdaemon
   - gnupg2
+  - sshpass
 
 required_snaps:
   - name: powershell

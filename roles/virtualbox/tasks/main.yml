@@ -1,0 +1,14 @@
+- name: Install Virtualbox
+  become: true
+  ansible.builtin.apt:
+    deb: "{{ virtualbox_download_url }}"
+
+- name: Download Virtualbox Extension Pack
+  ansible.builtin.get_url:
+    url: "{{ vboxextpack_download_url }}"
+    dest: "/home/{{ ansible_user_id }}/Downloads"
+  register: vboxextpack_download
+
+- name: Install Virtualbox Extension Pack
+  become: true
+  ansible.builtin.shell: "yes | VBoxManage extpack install --replace {{ vboxextpack_download.dest }}"

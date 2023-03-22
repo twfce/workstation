@@ -115,6 +115,16 @@
     key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color"
     value: "'rgb(20,16,31)'"
 
+- name: Foreground color
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/foreground-color"
+    value: "'rgb(191,191,191)'"
+
+- name: Disable system theme
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors"
+    value: "false"
+
 - name: Terminal bell
   community.general.dconf:
     key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/audible-bell"
@@ -144,6 +154,11 @@
   community.general.dconf:
     key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/custom-command"
     value: "'/bin/zsh -c /bin/tmux'"
+
+- name: Terminal enable custom command
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-custom-command"
+    value: "true"
 
 - name: Terminal find shortcut
   community.general.dconf:

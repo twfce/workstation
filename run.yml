@@ -3,11 +3,30 @@
   name: Setup workstation
   gather_facts: true
   become: false
+  vars_prompt:
+    - name: reboot
+      prompt: Reboot at the end (Y/N)?
 
   vars:
     git_name: "Johannes Seitle"
     git_email: "johannes@seitle.io"
     git_username: "twfce"
+
+  pre_tasks:
+    - name: Update apt repo and cache on all Debian/Ubuntu boxes
+      become: true
+      ansible.builtin.apt: update_cache=yes force_apt_get=yes cache_valid_time=3600 lock_timeout=240
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Upgrade all packages
+      become: true
+      ansible.builtin.apt: upgrade=dist force_apt_get=yes lock_timeout=240
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Check if a reboot is needed on all servers
+      become: true
+      register: reboot_required_file
+      ansible.builtin.stat: path=/var/run/reboot-required get_md5=no
 
   roles:
     - role: basic
@@ -16,3 +35,13 @@
       tags: git
     - role: vscode
       tags: vscode
+    - role: virtualbox
+      tags: virtualbox
+    - role: vagrant
+      tags: vagrant
+
+  post_tasks:
+    - name: Reboot workstation after setup
+      ansible.builtin.command: reboot
+      become: true
+      when: reboot == "Y" or reboot_required_file.stat.exists

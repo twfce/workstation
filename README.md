@@ -1,5 +1,1 @@
-
-
-# Used Software
-- vscode
-- git
+> Basic setup for my own workstation. 💻

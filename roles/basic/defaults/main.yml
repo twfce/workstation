@@ -18,6 +18,10 @@ required_packages:
   - scdaemon
   - gnupg2
   - sshpass
+  - ca-certificates
+  - libfuse2
+  - gimp
+  - inkscape
 
 required_snaps:
   - name: powershell

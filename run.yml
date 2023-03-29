@@ -39,6 +39,9 @@
       tags: virtualbox
     - role: vagrant
       tags: vagrant
+    - role: geerlingguy.docker
+      become: true
+      tags: docker
 
   post_tasks:
     - name: Reboot workstation after setup

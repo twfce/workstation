@@ -22,12 +22,12 @@ required_packages:
   - libfuse2
   - gimp
   - inkscape
+  - ansible-lint
 
 required_snaps:
   - name: powershell
     classic: true
 
-required_python_modules:
-  - ansible-lint
+required_python_modules: []
 
 gnome_icon_theme: papirus-icon-theme

@@ -34,30 +34,30 @@
 # themes    #
 #############
 
-- name: Copy wallpaper to workstation
-  ansible.builtin.copy:
-    src: files/wallpaper.jpg
-    dest: "/home/{{ ansible_user_id }}/.local/share/backgrounds/"
+# - name: Copy wallpaper to workstation
+#   ansible.builtin.copy:
+#     src: files/wallpaper.jpg
+#     dest: "/home/{{ ansible_user_id }}/.local/share/backgrounds/"
 
-- name: Set wallpaper
-  community.general.dconf:
-    key: "/org/gnome/desktop/background/picture-uri-dark"
-    value: "'file:///home/{{ ansible_user_id }}/.local/share/backgrounds/wallpaper.jpg'"
+# - name: Set wallpaper
+#   community.general.dconf:
+#     key: "/org/gnome/desktop/background/picture-uri-dark"
+#     value: "'file:///home/{{ ansible_user_id }}/.local/share/backgrounds/wallpaper.jpg'"
 
-- name: Set wallpaper (dark)
-  community.general.dconf:
-    key: "/org/gnome/desktop/background/picture-uri"
-    value: "'file:///home/{{ ansible_user_id }}/.local/share/backgrounds/wallpaper.jpg'"
+# - name: Set wallpaper (dark)
+#   community.general.dconf:
+#     key: "/org/gnome/desktop/background/picture-uri"
+#     value: "'file:///home/{{ ansible_user_id }}/.local/share/backgrounds/wallpaper.jpg'"
 
-- name: Set theme
-  community.general.dconf:
-    key: "/org/gnome/desktop/interface/gtk-theme"
-    value: "'Yaru-purple-dark'"
+# - name: Set theme
+#   community.general.dconf:
+#     key: "/org/gnome/desktop/interface/gtk-theme"
+#     value: "'Yaru-purple-dark'"
 
-- name: Set icon theme
-  community.general.dconf:
-    key: "/org/gnome/desktop/interface/icon-theme"
-    value: "'Yaru-purple-dark'"
+# - name: Set icon theme
+#   community.general.dconf:
+#     key: "/org/gnome/desktop/interface/icon-theme"
+#     value: "'Yaru-purple-dark'"
 
 #############
 # shortcuts #
